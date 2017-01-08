@@ -7,9 +7,13 @@
 //
 
 import UIKit
+import CoreData
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var textField: UITextField!
+    let dataController = DataController.sharedInstance
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -21,5 +25,23 @@ class ViewController: UIViewController {
     }
 
 
+    @IBAction func cancel(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
+    @IBAction func save(_ sender: Any) {
+        guard  let text = textField.text else {
+            return
+        }
+        
+        let item = NSEntityDescription.insertNewObject(forEntityName: Item.identifier, into: dataController.managedObjectContext) as! Item
+        
+        item.text = text
+        
+        dataController.saveContext()
+        
+        dismiss(animated: true, completion: nil)
+    }
 }
 
